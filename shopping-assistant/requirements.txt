@@ -1,0 +1,9 @@
+langchain
+langchain-openai
+langchain-qdrant
+langchain-community
+openai
+python-dotenv
+qdrant-client
+langgraph
+pandas
