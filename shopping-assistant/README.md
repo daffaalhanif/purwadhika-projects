@@ -1,23 +1,23 @@
-# 🛍️ Shopping Assistant
+# Shopping Assistant
 
-Chatbot asisten belanja berbasis **LangGraph** untuk **Toko Pakaian Purwadhika**. Chatbot ini menggunakan arsitektur multi-agent dengan routing otomatis untuk menjawab pertanyaan seputar produk, promo, maupun pertanyaan umum.
+A shopping chatbot built with **LangGraph** for **Amazon Store**. This chatbot uses a multi-agent architecture with automatic routing to answer questions about products, promotions, and general inquiries.
 
-## Fitur
+## Features
 
-- **Multi-agent routing** — pertanyaan diklasifikasikan secara otomatis ke agent yang tepat (produk, promo, atau umum)
-- **Dua mode output** — `invoke` untuk respons penuh sekaligus, `stream` untuk output bertahap per node
-- **Memori percakapan** — menyimpan hingga 10 pesan terakhir sebagai konteks
-- **Semantic search** — pencarian produk berbasis vektor menggunakan Qdrant (opsional)
-- **Promo dinamis** — promo disesuaikan otomatis berdasarkan hari
+- **Multi-agent routing** - questions are automatically classified and routed to the appropriate agent (product, promo, or general)
+- **Two output modes** - `invoke` for complete responses, `stream` for incremental output per node
+- **Conversation memory** - retains up to 10 recent messages as context
+- **Semantic search** - vector-based product search using Qdrant (optional)
+- **Dynamic promotions** - promotions are automatically adjusted based on the day
 
-## Arsitektur
+## Architecture
 
 ```
 User Input
     │
     ▼
 ┌─────────────┐
-│ filter_agent│  → Mengklasifikasikan intent: product / promo / other
+│ filter_agent│  → Classifies intent: product / promo / other
 └──────┬──────┘
        │
   ┌────┴──────────────┐
@@ -30,54 +30,54 @@ product   promo     basic
    Response
 ```
 
-| Agent | Tugas |
+| Agent | Role |
 |---|---|
-| `filter_agent` | Mengklasifikasikan pertanyaan user menjadi `product`, `promo`, atau `other` |
-| `product_agent` | Menjawab pertanyaan seputar produk yang tersedia di toko |
-| `promo_agent` | Menjawab pertanyaan seputar promo yang berlaku hari ini |
-| `basic_agent` | Menjawab pertanyaan umum di luar topik produk dan promo |
+| `filter_agent` | Classifies user questions into `product`, `promo`, or `other` |
+| `product_agent` | Answers questions about available products in the store |
+| `promo_agent` | Answers questions about current promotions |
+| `basic_agent` | Answers general questions outside of products and promotions |
 
-## Struktur Project
+## Project Structure
 
 ```
 shopping-assistant/
-├── main.py                         # Entry point aplikasi
-├── requirements.txt                # Dependensi project
-├── pyproject.toml                  # Konfigurasi package
+├── main.py                         # Application entry point
+├── requirements.txt                # Project dependencies
+├── pyproject.toml                  # Package configuration
 ├── data/
-│   └── amazon_products.csv         # Dataset produk Amazon (untuk Qdrant)
+│   └── amazon_products.csv         # Amazon product dataset (for Qdrant)
 ├── scripts/
-│   └── load_qdrant.py              # Script untuk load data ke Qdrant
+│   └── load_qdrant.py              # Script to load data into Qdrant
 └── shopping_assistant/
     ├── __init__.py
-    ├── config.py                   # Konfigurasi LLM, embeddings, dan Qdrant
+    ├── config.py                   # LLM, embeddings, and Qdrant configuration
     ├── dummy_data/
-    │   ├── products.py             # Data dummy produk toko
-    │   └── promos.py               # Data dummy promo harian
+    │   ├── products.py             # Dummy store product data
+    │   └── promos.py               # Dummy daily promotion data
     ├── graph/
-    │   ├── nodes.py                # Definisi semua agent node
-    │   ├── state.py                # Definisi State (TypedDict)
-    │   └── workflow.py             # Definisi graph dan routing logic
+    │   ├── nodes.py                # All agent node definitions
+    │   ├── state.py                # State definition (TypedDict)
+    │   └── workflow.py             # Graph and routing logic definition
     └── utils/
-        └── retriever.py            # Utility semantic search via Qdrant
+        └── retriever.py            # Semantic search utility via Qdrant
 ```
 
-## Prasyarat
+## Prerequisites
 
 - Python 3.10+
 - [OpenAI API Key](https://platform.openai.com/api-keys)
-- [Qdrant](https://qdrant.tech/) Cloud account *(opsional, untuk semantic search)*
+- [Qdrant](https://qdrant.tech/) Cloud account *(optional, for semantic search)*
 
-## Instalasi
+## Installation
 
-### 1. Clone repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/nadifwahdi/purwadhika-repo.git
-cd purwadhika-repo/shopping-assistant
+git clone https://github.com/daffaalhanif/purwadhika-projects.git
+cd purwadhika-projects/shopping-assistant
 ```
 
-### 2. Buat dan aktifkan virtual environment
+### 2. Create and activate virtual environment
 
 ```bash
 python -m venv venv
@@ -89,109 +89,109 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-### 3. Install dependensi
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 pip install -e .
 ```
 
-### 4. Konfigurasi environment variables
+### 4. Configure environment variables
 
-Buat file `.env` di dalam folder `shopping-assistant/`:
+Create a `.env` file inside the `shopping-assistant/` folder:
 
 ```bash
 cp .env.example .env
 ```
 
-Isi file `.env` dengan kredensial kamu:
+Fill in the `.env` file with your credentials:
 
 ```env
 OPENAI_API_KEY=sk-...
 
-# Opsional — hanya diperlukan jika menggunakan Qdrant
+# Optional - only required if using Qdrant
 QDRANT_API_KEY=your_qdrant_api_key
 QDRANT_URL=https://your-cluster.qdrant.io
 ```
 
-## Menjalankan Aplikasi
+## Running the App
 
 ```bash
 python main.py
 ```
 
-Saat dijalankan, kamu akan diminta memilih mode output:
+When launched, you will be prompted to select an output mode:
 
 ```
 ============================================================
-Pilih mode chatbot (invoke/stream) [default invoke]:
+Select chatbot mode (invoke/stream) [default invoke]:
 ============================================================
-🛍️  Selamat datang di Toko Pakaian Purwadhika!
-   Ketik 'quit' / 'exit' / 'q' untuk keluar.
+🛍️  Welcome to Amazon Store!
+    Type 'quit' / 'exit' / 'q' to exit.
 ============================================================
-Anda: _
+You: _
 ```
 
-| Mode | Deskripsi |
+| Mode | Description |
 |---|---|
-| `invoke` | Menampilkan respons final setelah semua node selesai diproses |
-| `stream` | Menampilkan output setiap node secara bertahap beserta info routing |
+| `invoke` | Displays the final response after all nodes have finished processing |
+| `stream` | Displays output from each node incrementally along with routing info |
 
-## Penggunaan Qdrant (Opsional)
+## Using Qdrant (Optional)
 
-Fitur ini memungkinkan pencarian produk secara semantik menggunakan dataset Amazon.
+This feature enables semantic product search using the Amazon dataset.
 
-### 1. Pastikan kredensial Qdrant sudah diisi di `.env`
+### 1. Make sure Qdrant credentials are filled in `.env`
 
-### 2. Load data ke Qdrant
+### 2. Load data into Qdrant
 
 ```bash
 python scripts/load_qdrant.py
 ```
 
-Script ini akan membaca `data/amazon_products.csv`, mengubah setiap produk menjadi dokumen vektor, dan meng-upload-nya ke koleksi `amazon_products` di Qdrant.
+This script reads `data/amazon_products.csv`, converts each product into a vector document, and uploads it to the `amazon_products` collection in Qdrant.
 
-### 3. Gunakan retriever di kode kamu
+### 3. Use the retriever in your code
 
 ```python
 from shopping_assistant.utils.retriever import retrieve_documents
 
 results = retrieve_documents(
     collection_name="amazon_products",
-    query="laptop gaming dengan harga terjangkau",
+    query="affordable gaming laptop",
     top_k=5
 )
 ```
 
-## Contoh Percakapan
+## Example Conversation
 
 ```
-Anda: ada jaket apa saja?
-🔀 Routing ke agent product
+You: what jackets do you have?
+🔀 Routing to product agent
 🤖 product_agent:
-Halo! Kami punya koleksi jaket keren dengan harga Rp399.000, mulai dari
-jaket denim, bomber, hingga windbreaker. Mau saya bantu pilihkan yang
-sesuai selera kamu? 😊
+Hi! We have a great jacket collection priced at Rp399,000, ranging from
+denim jackets, bombers, to windbreakers. Would you like me to help you
+find one that suits your style? 😊
 
-Anda: ada promo hari ini?
-🔀 Routing ke agent promo
+You: any promotions today?
+🔀 Routing to promo agent
 🤖 promo_agent:
-Selamat! Hari ini Jumat, ada diskon 30% untuk semua produk. Yuk,
-manfaatkan promo ini sekarang! 🎉
+Great news! Today is Friday, enjoy 30% off all products. Take advantage
+of this promo now! 🎉
 
-Anda: toko buka sampai jam berapa?
-🔀 Routing ke agent basic
+You: what time does the store close?
+🔀 Routing to basic agent
 🤖 basic_agent:
-Toko kami buka setiap hari pukul 09.00–21.00 WIB. Ada yang bisa
-saya bantu lagi? 😊
+Our store is open every day from 09:00 to 21:00 WIB. Is there anything
+else I can help you with? 😊
 ```
 
-## Teknologi yang Digunakan
+## Tech Stack
 
-| Library | Fungsi |
+| Library | Purpose |
 |---|---|
-| [LangGraph](https://langchain-ai.github.io/langgraph/) | Orkestrasi multi-agent graph |
-| [LangChain](https://python.langchain.com/) | Abstraksi LLM dan tooling |
-| [OpenAI GPT-4o-mini](https://platform.openai.com/) | Model bahasa utama |
-| [Qdrant](https://qdrant.tech/) | Vector database untuk semantic search |
-| [python-dotenv](https://pypi.org/project/python-dotenv/) | Manajemen environment variables |
+| [LangGraph](https://langchain-ai.github.io/langgraph/) | Multi-agent graph orchestration |
+| [LangChain](https://python.langchain.com/) | LLM abstraction and tooling |
+| [OpenAI GPT-4o-mini](https://platform.openai.com/) | Primary language model |
+| [Qdrant](https://qdrant.tech/) | Vector database for semantic search |
+| [python-dotenv](https://pypi.org/project/python-dotenv/) | Environment variable management |
