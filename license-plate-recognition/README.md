@@ -39,8 +39,8 @@ Training stopped early at epoch 44 out of 50. Best model saved at epoch 39.
 ## Installation
 
 ```bash
-git clone https://github.com/daffaalhanif/license-plate-recognition.git
-cd license-plate-recognition
+git clone https://github.com/daffaalhanif/purwadhika-projects.git
+cd purwadhika-projects/license-plate-recognition
 
 python -m venv venv
 source venv/bin/activate

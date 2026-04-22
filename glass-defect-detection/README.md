@@ -38,8 +38,8 @@ Training stopped early at epoch 75 out of 100. Best model saved at epoch 65.
 ## Installation
 
 ```bash
-git clone https://github.com/daffaalhanif/glass-defect-detection.git
-cd glass-defect-detection
+git clone https://github.com/daffaalhanif/purwadhika-projects.git
+cd purwadhika-projects/glass-defect-detection
 
 python -m venv venv
 source venv/bin/activate
