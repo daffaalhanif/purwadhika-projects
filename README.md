@@ -1,4 +1,4 @@
-# Purwadhika Practice Sessions
+# Purwadhika Projects
 
 A collection of projects from the AI Engineering Bootcamp practice sessions at Purwadhika.
 
