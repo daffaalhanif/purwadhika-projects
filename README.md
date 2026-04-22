@@ -1,9 +1,11 @@
 # Purwadhika Practice Sessions
 
-Repositori ini berisi kumpulan project dari practice session AI Engineering Bootcamp Purwadhika.
+A collection of projects from the AI Engineering Bootcamp practice sessions at Purwadhika.
 
 ## Projects
 
-| Project | Deskripsi | Tech Stack |
+| Project | Description | Tech Stack |
 |---|---|---|
-| [shopping-assistant](./shopping-assistant) | Chatbot asisten belanja multi-agent dengan RAG | LangGraph, LangChain, OpenAI, Qdrant |
+| [shopping-assistant](./shopping-assistant) | Multi-agent shopping chatbot with RAG | LangGraph, LangChain, OpenAI, Qdrant |
+| [license-plate-recognition](./license-plate-recognition) | License plate recognition system | YOLOv12, EasyOCR, Gradio |
+| [glass-defect-detection](./glass-defect-detection) | Glass product defect detection system | YOLOv12, Gradio |
